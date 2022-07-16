@@ -6,10 +6,7 @@ import jwt from "express-jwt";
 import jwks from "jwks-rsa";
 
 import rutasTipo from "./views/tipos/rutas.js";
-import rutasProducto from "./views/productos/rutas.js";
 import rutasUsuario from "./views/usuarios/rutas.js";
-import rutasVenta from "./views/ventas/rutas.js";
-import rutasFuncionario from "./views/funcionarios/rutas.js";
 
 dotenv.config({ path: "./.env" });
 
@@ -39,10 +36,7 @@ app.get("/authorized", function (req, res) {
 });
 
 app.use(rutasTipo);
-app.use(rutasProducto);
 app.use(rutasUsuario);
-app.use(rutasVenta);
-app.use(rutasFuncionario);
 
 const main = () => {
   return app.listen(PORT, () => {
