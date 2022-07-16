@@ -1,15 +1,53 @@
-import express from "express";
+import Express from "express";
+import Cors from "cors";
+import dotenv from "dotenv";
+import { conectarBD } from "./db/db.js";
+import jwt from "express-jwt";
+import jwks from "jwks-rsa";
 
-const app = express();
+import rutasTipo from "./views/tipos/rutas.js";
+import rutasProducto from "./views/productos/rutas.js";
+import rutasUsuario from "./views/usuarios/rutas.js";
+import rutasVenta from "./views/ventas/rutas.js";
+import rutasFuncionario from "./views/funcionarios/rutas.js";
 
-//settings
-app.set("port", 5000);
+dotenv.config({ path: "./.env" });
 
-//routes
-app.get("/", (req, res) => {
-  res.send("Reto técnico: Training League Sofka");
+const app = Express();
+
+const PORT = process.env.PORT || 5000;
+
+app.use(Express.json());
+app.use(Cors());
+
+var jwtCheck = jwt({
+  secret: jwks.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: process.env.A0_API_JWKSURI,
+  }),
+  audience: process.env.A0_API_AUDIENCE,
+  issuer: process.env.AO_APP_ISSUER,
+  algorithms: [process.env.A0_API_ALGORITHMS],
 });
 
-app.listen(app.get("port"), () => {
-  console.log(`Servidor conectado en el puerto ${app.get("port")}`);
+// app.use(jwtCheck);
+
+app.get("/authorized", function (req, res) {
+  res.send("Secured Resource");
 });
+
+app.use(rutasTipo);
+app.use(rutasProducto);
+app.use(rutasUsuario);
+app.use(rutasVenta);
+app.use(rutasFuncionario);
+
+const main = () => {
+  return app.listen(PORT, () => {
+    console.log(`Servidor conectado en el puerto ${process.env.PORT}`);
+  });
+};
+
+conectarBD(main);
