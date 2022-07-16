@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "index.js",
   "repository": "https://github.com/Sofka-Training-League/backendNode-estacion-espacial.git",
   "author": "Duhan Renteria <derh7280@hotmail.com",
   "license": "MIT",
